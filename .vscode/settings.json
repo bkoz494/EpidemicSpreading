@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "e:\\Users\\Bartek\\Downloads\\gs-ui-1.3\\gs-ui-1.3\\gs-ui-1.3.jar",
+        "e:\\Users\\Bartek\\Downloads\\gs-algo-1.3\\gs-algo-1.3\\gs-algo-1.3.jar",
+        "e:\\Users\\Bartek\\Downloads\\gs-core-1.3\\gs-core-1.3\\gs-core-1.3.jar"
+    ]
+}
