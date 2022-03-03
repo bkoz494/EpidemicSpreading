@@ -1,20 +1,24 @@
-package model;
+package uksw.graphs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
 public class Person {
-    Node node;
-    int xDest, yDest;
-    Status status;
-    int xCoord, yCoord;
-    String id;
-    Random rand;
-    SingleGraph myGraph;
-    ArrayList<Node> destSet;
+    private Node node;
+    private int xDest, yDest;
+    private Status status;
+    private Long statusChangeTime;
+    private int xCoord, yCoord;
+    private String id;
+    private Random rand;
+    private SingleGraph myGraph;
+    private ArrayList<Node> destSet;
+    private Map<String, Long> encounteredPeople = new HashMap<>();
 
     public Person(String id, SingleGraph myGraph, ArrayList<Node> destSet){
         this.id = id;
@@ -24,12 +28,13 @@ public class Person {
 
         node = myGraph.addNode(id);
         status = Status.SUSCEPTIBLE;
+        setStatusChangeTime(System.currentTimeMillis());
         node.addAttribute("ui.style", "fill-color:green; size:10px;");
 
         //set coordinates
         xCoord = rand.nextInt(App.ENVIRONMENT_SIZE);
         yCoord = rand.nextInt(App.ENVIRONMENT_SIZE);
-        
+
         xCoord = xCoord - (xCoord%App.STREET_DIST);
         yCoord = yCoord - (yCoord%App.STREET_DIST);
         node.addAttribute("x", xCoord);
@@ -85,7 +90,7 @@ public class Person {
             node.addAttribute("ui.style", "fill-color:green;");
         }
         else if(status == Status.EXPOSED){
-            node.addAttribute("ui.style", "fill-color:yellow;");
+            node.addAttribute("ui.style", "fill-color:orange;");
         }
         else if(status == Status.INFECTED){
             node.addAttribute("ui.style", "fill-color:red;");
@@ -97,5 +102,22 @@ public class Person {
 
     public Status getStatus(){
         return status;
+    }
+
+
+    public Long getStatusChangeTime() {
+        return statusChangeTime;
+    }
+
+    public void setStatusChangeTime(Long statusChangeTime) {
+        this.statusChangeTime = statusChangeTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Map<String, Long> getEncounteredPeople() {
+        return encounteredPeople;
     }
 }

@@ -1,4 +1,4 @@
-package model;
+package uksw.graphs;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
