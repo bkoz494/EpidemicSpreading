@@ -47,23 +47,23 @@ public class App {
             }
 
             //set random status
-            if(rand.nextDouble() < 0.01){
-                int tmp = rand.nextInt(4);
-                switch(tmp){
-                    case 0:
-                    person.setStatus(Status.SUSCEPTIBLE);
-                        break;
-                    case 1:
-                    person.setStatus(Status.EXPOSED);
-                        break;
-                    case 2:
-                    person.setStatus(Status.INFECTED);
-                        break;
-                    case 3:
-                    person.setStatus(Status.RECOVERED);
-                        break;
-                }
-            }
+            // if(rand.nextDouble() < 0.01){
+            //     int tmp = rand.nextInt(4);
+            //     switch(tmp){
+            //         case 0:
+            //         person.setStatus(Status.SUSCEPTIBLE);
+            //             break;
+            //         case 1:
+            //         person.setStatus(Status.EXPOSED);
+            //             break;
+            //         case 2:
+            //         person.setStatus(Status.INFECTED);
+            //             break;
+            //         case 3:
+            //         person.setStatus(Status.RECOVERED);
+            //             break;
+            //     }
+            // }
 
             List<Person> surroundingPeople = people.stream()
                     .filter(sp -> {
