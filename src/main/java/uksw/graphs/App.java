@@ -13,7 +13,7 @@ public class App {
     public final static int ENVIRONMENT_SIZE = 1000;  //called L in PDF
     public final static int STREET_DIST = 100; // called dis in PDF
     public final static int PEOPLE_DIST = 50;  // called dist in PDF
-    public final static int PEOPLE_AMOUNT = 1000;    // {100, 200, 300, 500}
+    public final static int PEOPLE_AMOUNT = 100;    // {100, 200, 300, 500}
     public final static int D_START = 2000;    // {0, 5, 10, 20}
     public final static int D_INFECTIOUS = 3000;  // {10, 20, 30, 50, 100}
     public final static int D_RECOVERED = 2000;   //{20, 50, 100, 200, 500}
@@ -29,6 +29,7 @@ public class App {
         myGraph = Tools.grid(ENVIRONMENT_SIZE, STREET_DIST);
         ArrayList<Node> crossroads = new ArrayList<>(myGraph.getNodeSet());
         //add people to grid
+
         for(int i=0; i<PEOPLE_AMOUNT; i++){
             String id = String.valueOf(i);
             Person p = new Person(id, myGraph, crossroads);

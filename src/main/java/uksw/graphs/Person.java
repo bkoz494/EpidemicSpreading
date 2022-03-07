@@ -19,12 +19,14 @@ public class Person {
     private SingleGraph myGraph;
     private ArrayList<Node> destSet;
     private Map<String, Long> encounteredPeople = new HashMap<>();
+    private int velocity;
 
     public Person(String id, SingleGraph myGraph, ArrayList<Node> destSet){
+        rand = new Random();
+        newVelocity();
         this.id = id;
         this.myGraph = myGraph;
         this.destSet = destSet;
-        rand = new Random();
 
         node = myGraph.addNode(id);
         status = Status.SUSCEPTIBLE;
@@ -35,8 +37,12 @@ public class Person {
         xCoord = rand.nextInt(App.ENVIRONMENT_SIZE);
         yCoord = rand.nextInt(App.ENVIRONMENT_SIZE);
 
-        xCoord = xCoord - (xCoord%App.STREET_DIST);
-        yCoord = yCoord - (yCoord%App.STREET_DIST);
+        if(rand.nextDouble() < 0.5){
+            xCoord = xCoord - (xCoord%App.STREET_DIST);
+        }
+        else{
+            yCoord = yCoord - (yCoord%App.STREET_DIST);
+        }
         node.addAttribute("x", xCoord);
         node.addAttribute("y", yCoord);
 
@@ -53,6 +59,10 @@ public class Person {
         Node dest = destSet.get(rand.nextInt(destSetSize));
         xDest = dest.getAttribute("x");
         yDest = dest.getAttribute("y");
+        newVelocity();
+    }
+    private void newVelocity(){
+        velocity = rand.nextInt(3)+1;
     }
 
     public boolean isDestReached(){
@@ -63,14 +73,29 @@ public class Person {
     }
 
     public void moveToDest(){
-        //if x coord is closer to xDest than y coord but x is still not equal xDest, then set proper x coord first
+        if(Math.abs(xCoord-xDest) < velocity) xCoord = xDest;
+        if(Math.abs(yCoord-yDest) < velocity) yCoord = yDest;
+
+            //if x coord is closer to xDest than y coord but x is still not equal xDest, then set proper x coord first
         if(((Math.abs(xCoord-xDest) < Math.abs(yCoord-yDest)) && (xCoord != xDest)) || (yCoord == yDest)){
-            if(xCoord > xDest) xCoord--;
-            else if(xCoord < xDest) xCoord++;
+            if(yCoord%App.STREET_DIST != 0){
+                if(yCoord > yDest) yCoord-= velocity;
+                else if(yCoord < yDest) yCoord+= velocity;
+            }
+            else{
+                if(xCoord > xDest) xCoord-= velocity;
+                else if(xCoord < xDest) xCoord+= velocity;
+            }
         }
         else{
-            if(yCoord > yDest) yCoord--;
-            else if (yCoord < yDest) yCoord++;
+            if(xCoord%App.STREET_DIST != 0){
+                if(xCoord > xDest) xCoord-= velocity;
+                else if(xCoord < xDest) xCoord+= velocity;
+            }
+            else{
+                if(yCoord > yDest) yCoord-= velocity;
+                else if (yCoord < yDest) yCoord+= velocity;
+            }
         }
         node.addAttribute("x", xCoord);
         node.addAttribute("y", yCoord);
