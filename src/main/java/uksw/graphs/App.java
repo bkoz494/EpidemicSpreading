@@ -14,9 +14,9 @@ public class App {
     public final static int STREET_DIST = 100; // called dis in PDF
     public final static int PEOPLE_DIST = 50;  // called dist in PDF
     public final static int PEOPLE_AMOUNT = 100;    // {100, 200, 300, 500}
-    public final static int D_START = 2000;    // {0, 5, 10, 20}
+    public final static int D_START = 1000;    // {0, 5, 10, 20}
     public final static int D_INFECTIOUS = 3000;  // {10, 20, 30, 50, 100}
-    public final static int D_RECOVERED = 2000;   //{20, 50, 100, 200, 500}
+    public final static int D_RECOVERED = 4000;   //{20, 50, 100, 200, 500}
 
     SingleGraph myGraph;
     static List<Person> people;
@@ -36,6 +36,27 @@ public class App {
             people.add(p);
         }
 
+        //set random initial status
+         people.forEach(person -> {
+            if(rand.nextDouble() < 0.3){
+                int tmp = rand.nextInt(4);
+                switch(tmp){
+                    case 0:
+                        person.setStatus(Status.SUSCEPTIBLE);
+                        break;
+                    case 1:
+                        person.setStatus(Status.EXPOSED);
+                        break;
+                    case 2:
+                        person.setStatus(Status.INFECTED);
+                        break;
+                    case 3:
+                        person.setStatus(Status.RECOVERED);
+                        break;
+                }
+            }
+         });
+
         myGraph.display(false);
     }
 
@@ -47,25 +68,6 @@ public class App {
                 person.newDestination();
             }
 
-            //set random status
-            // if(rand.nextDouble() < 0.01){
-            //     int tmp = rand.nextInt(4);
-            //     switch(tmp){
-            //         case 0:
-            //         person.setStatus(Status.SUSCEPTIBLE);
-            //             break;
-            //         case 1:
-            //         person.setStatus(Status.EXPOSED);
-            //             break;
-            //         case 2:
-            //         person.setStatus(Status.INFECTED);
-            //             break;
-            //         case 3:
-            //         person.setStatus(Status.RECOVERED);
-            //             break;
-            //     }
-            // }
-
             List<Person> surroundingPeople = people.stream()
                     .filter(sp -> {
                         Integer xDiff = Math.abs(sp.getXCoord() - person.getXCoord());
@@ -75,7 +77,7 @@ public class App {
                     .collect(Collectors.toList());
 
             Map<String, Long> encounteredPeople = person.getEncounteredPeople();
-            surroundingPeople.forEach(sp -> encounteredPeople.put(sp.getId(), System.currentTimeMillis()));
+            surroundingPeople.forEach(sp -> encounteredPeople.put(sp.getId(), System.nanoTime()));
 
             Map<Status, List<Person>> grouped = surroundingPeople.stream()
                     .collect(Collectors.groupingBy(Person::getStatus));
@@ -89,7 +91,7 @@ public class App {
                     }
 
                     for(Person i : infected) {
-                        Long contactDuration = System.currentTimeMillis() - encounteredPeople.get(i.getId());
+                        Long contactDuration = System.nanoTime() - encounteredPeople.get(i.getId());
                         Double probabilityOfInfection = 1.0 - 1.0/Math.sqrt(contactDuration);
 
                         if(Math.random() < probabilityOfInfection) {
